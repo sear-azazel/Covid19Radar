@@ -35,6 +35,7 @@ namespace Covid19Radar.iOS
             });
 
             //Plugin.LocalNotification.NotificationCenter.AskPermission();
+            SlideOverKit.iOS.SlideOverKit.Init();
 
             LoadApplication(new App(new iOSInitializer()));
 

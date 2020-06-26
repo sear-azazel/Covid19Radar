@@ -7,6 +7,7 @@
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
     xmlns:resources="clr-namespace:Covid19Radar.Resources;assembly=Covid19Radar"
+    xmlns:slide="clr-namespace:SlideOverKit;assembly=SlideOverKit"
     ios:Page.UseSafeArea="true"
     prism:ViewModelLocator.AutowireViewModel="True"
     Visual="Material">
@@ -18,7 +19,7 @@
             BarBackgroundColor="#FFFFFF"
             BarTextColor="Black">
             <x:Arguments>
-                <ContentPage Title="{x:Static resources:AppResources.MenuPageTitle}" BackgroundColor="#FFFFFF">
+                <slide:MenuContainerPage Title="{x:Static resources:AppResources.MenuPageTitle}" BackgroundColor="#FFFFFF">
                     <ListView
                         ItemsSource="{Binding MenuItems}"
                         RowHeight="60"
@@ -63,7 +64,7 @@
                         </ListView.Behaviors>
 
                     </ListView>
-                </ContentPage>
+                </slide:MenuContainerPage>
             </x:Arguments>
             <NavigationPage.IconImageSource>
                 <OnPlatform x:TypeArguments="FileImageSource">
