@@ -314,7 +314,7 @@ namespace Xamarin.Forms.Platform.iOS
             MasterDetailPage.DetailBounds = new Rectangle(0, 0, frame.Width, frame.Height);
 
             if (Presented)
-                _clickOffView.Frame = _detailController.View.Frame;
+                _clickOffView.Frame = _masterController.View.Frame;
         }
 
 		void PackContainers()
@@ -481,40 +481,40 @@ namespace Xamarin.Forms.Platform.iOS
 
 						motion = motion * directionModifier;
 
-						var detailView = _detailController.View;
-						var targetFrame = detailView.Frame;
+						var masterView = _masterController.View;
+						var targetFrame = masterView.Frame;
                         if (Presented)
-                            targetFrame.X = (nfloat)Math.Max(0, _masterController.View.Frame.Width + Math.Min(0, motion));
+                            targetFrame.X = (nfloat)Math.Min(-_masterController.View.Frame.Width, Math.Min(0, motion));
                         else
-                            targetFrame.X = (nfloat)Math.Min(_masterController.View.Frame.Width, Math.Max(0, motion));
+                            targetFrame.X = (nfloat)Math.Min(0, -_masterController.View.Frame.Width + Math.Max(0, motion));
 
                         targetFrame.X = targetFrame.X * directionModifier;
-						if (_applyShadow)
+                        if (_applyShadow)
 						{
-							var openProgress = targetFrame.X / _masterController.View.Frame.Width;
+							var openProgress = (_masterController.View.Frame.Width - targetFrame.X) / _masterController.View.Frame.Width;
 							ApplyDetailShadow((nfloat)openProgress);
 						}
 
-						detailView.Frame = targetFrame;
+						masterView.Frame = targetFrame;
 						break;
 					case UIGestureRecognizerState.Ended:
-						var detailFrame = _detailController.View.Frame;
-						var masterFrame = _masterController.View.Frame;
-						if (Presented)
-						{
-							if (detailFrame.X * directionModifier < masterFrame.Width * .75)
-								Presented = false;
-							else
-								LayoutChildren(true);
-						}
-						else
-						{
-							if (detailFrame.X * directionModifier > masterFrame.Width * .25)
-								Presented = true;
-							else
-								LayoutChildren(true);
-						}
-						break;
+                        //var detailFrame = _detailController.View.Frame;
+                        var masterFrame = _masterController.View.Frame;
+                        if (Presented)
+                        {
+                            if ((masterFrame.Width + masterFrame.X) * directionModifier < masterFrame.Width * .75)
+                                Presented = false;
+                            else
+                                LayoutChildren(true);
+                        }
+                        else
+                        {
+                            if ((masterFrame.Width + masterFrame.X) * directionModifier > masterFrame.Width * .25)
+                                Presented = true;
+                            else
+                                LayoutChildren(true);
+                        }
+                        break;
 				}
 			});
 			_panGesture.CancelsTouchesInView = false;
